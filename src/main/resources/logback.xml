@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false"><!-- scan="false" scanPeriod="60 seconds",true配置文件发生改变就会重新加载， 扫描时间间隔60s,false不会实时显示logback的信息-->
+	<!-- 自定义常量 -->
+	<!-- trace<debug<info<warn<error -->
+	<property name="log.level" value="debug"/>
+	<property name="log.maxHistory" value="30"/>
+	<property name="log.filepath" value="${catalina.base}/logs/webapps"/>
+	<property name="log.pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS}[%thread]%-5level%logger{50}-%msg%n"/>
+	<appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>${log.pattern}</pattern>
+		</encoder>
+	</appender>
+	<!-- DEBUG -->
+	<appender name="debugAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	<!-- 文件路径 -->
+		<file>${log.filepath}/debug.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- 文件名称 -->
+			<fileNamePattern>
+				${log.filepath}/debug/debug.%d{yyyy-MM-dd}.log.gz<!-- logback会自动压缩文件 -->
+			</fileNamePattern>
+			<!-- 文件最大保存历史数量 -->
+			<maxHistory>${log.maxHistory}</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${log.pattern}</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>DEBUG</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+	<!-- INFO -->
+	<appender name="infoAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	<!-- 文件路径 -->
+		<file>${log.filepath}/info.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- 文件名称 -->
+			<fileNamePattern>
+				${log.filepath}/info/info.%d{yyyy-MM-dd}.log.gz<!-- logback会自动压缩文件 -->
+			</fileNamePattern>
+			<!-- 文件最大保存历史数量 -->
+			<maxHistory>${log.maxHistory}</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${log.pattern}</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>INFO</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+	<!-- error -->
+	<appender name="errorAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	<!-- 文件路径 -->
+		<file>${log.filepath}/error.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- 文件名称 -->
+			<fileNamePattern>
+				${log.filepath}/error/error.%d{yyyy-MM-dd}.log.gz<!-- logback会自动压缩文件 -->
+			</fileNamePattern>
+			<!-- 文件最大保存历史数量 -->
+			<maxHistory>${log.maxHistory}</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>${log.pattern}</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+	<logger name="com.web" level="DEBUG" additivity="false"><!-- true 会继承root的信息 -->
+		<appender-ref ref="debugAppender"/>
+		<appender-ref ref="infoAppender"/>
+		<appender-ref ref="errorAppender"/>
+	</logger>
+	<root level="DEBUG"><!-- 对应控制台 -->
+		<append-ref ref="consoleAppender"/>
+	</root>
+</configuration>
