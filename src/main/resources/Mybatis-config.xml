@@ -12,6 +12,9 @@
   	<!-- 开启驼峰命名转换，table{create_time}-》Entity{createTime} -->
   	<setting name="mapUnderscoreToCamelCase" value="true"/>
   </settings>
+  <plugins>
+  	<plugin interceptor="com.split.DynamicDataSourceInterceptor"></plugin><!-- 設置攔截其 -->
+  </plugins>
   <!-- <environments default="development">
     <environment id="development">
       <transactionManager type="JDBC"/>
